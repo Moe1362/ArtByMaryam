@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap');
+
+/* ── Design Tokens ────────────────────────────────────────── */
+:root {
+  --bg:          #0e0d0b;
+  --surface:     #151410;
+  --border:      rgba(200, 180, 130, 0.15);
+  --gold:        #c8a96e;
+  --gold-light:  #e2c98a;
+  --text-primary:#f0ead8;
+  --text-muted:  #8a7f6a;
+  --overlay-bg:  rgba(10, 9, 7, 0.82);
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+}
+
+/* ── Container ────────────────────────────────────────────── */
+.collection-container {
+  min-height: 100vh;
+  padding: 72px 40px 80px;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(200,169,110,0.07) 0%, transparent 70%);
+  position: relative;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.collection-header {
+  text-align: center;
+  margin-bottom: 64px;
+  animation: fadeDown 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.collection-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.collection-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(36px, 5vw, 62px);
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.title-rule {
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin: 24px auto 0;
+  position: relative;
+}
+.title-rule::before,
+.title-rule::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 1px;
+  background: var(--gold);
+}
+.title-rule::before { left: -10px; }
+.title-rule::after  { right: -10px; }
+
+/* ── Grid ─────────────────────────────────────────────────── */
+.art-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Art Item ─────────────────────────────────────────────── */
+.art-item {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms);
+}
+
+.art-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Frame ────────────────────────────────────────────────── */
+.art-frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  /* Inner mat shadow */
+  box-shadow:
+    inset 0 0 0 6px rgba(200,180,130,0.06),
+    0 8px 40px rgba(0,0,0,0.55);
+  aspect-ratio: 4 / 5;
+}
+
+.art-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.65s ease;
+  filter: saturate(0.88) brightness(0.95);
+}
+
+.art-item:hover .art-frame img {
+  transform: scale(1.06);
+  filter: saturate(1.05) brightness(1.0);
+}
+
+/* ── Overlay ──────────────────────────────────────────────── */
+.art-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-bg);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 24px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.art-item:hover .art-overlay {
+  opacity: 1;
+}
+
+.overlay-medium {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  position: relative;
+  transform: translateY(6px);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.overlay-medium::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 10px;
+}
+
+.art-item:hover .overlay-medium {
+  transform: translateY(0);
+}
+
+/* ── Caption ──────────────────────────────────────────────── */
+.art-info {
+  padding: 16px 4px 4px;
+  border-top: none;
+}
+
+.art-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  line-height: 1.3;
+  transition: color 0.3s ease;
+}
+
+.art-item:hover .art-title {
+  color: var(--gold-light);
+}
+
+.art-medium {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+/* ── Entrance animation ───────────────────────────────────── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .collection-container { padding: 48px 20px 60px; }
+  .art-grid { gap: 20px; }
+}
