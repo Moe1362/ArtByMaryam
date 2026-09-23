@@ -1,16 +1,45 @@
-# React + Vite
+# Art By Maryam
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portfolio website for **Art By Maryam** — contemporary mixed-media paintings that weave
+Persian calligraphy, gold leaf and the human figure. Based in San Jose, California.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Home** — hero with featured work, the full collection, and a commission call to action
+- **Gallery lightbox** — full-size viewing with keyboard navigation (← → Esc) and focus management
+- **About** — artist biography and practice overview
+- Responsive layout, accessible markup (skip link, labelled regions, descriptive alt text),
+  reduced-motion support, and SEO / social-share meta tags
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React 19 · React Router 6 · Vite · Tailwind CSS (base layer) · plain CSS with design tokens
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev       # start the dev server
+npm run build     # production build to dist/
+npm run preview   # serve the production build locally
+npm run lint      # ESLint
+```
+
+## Editing content
+
+| What | Where |
+| --- | --- |
+| Artwork titles, media, alt text, images | `src/data/artworks.js` (images live in `public/`) |
+| Email, location, social links | `src/data/site.js` (a social link appears once its `href` is set) |
+| Colours, fonts, spacing | CSS variables at the top of `src/index.css` |
+| Page copy | `src/Pages/Home/Home.jsx`, `src/Pages/AboutMe/AboutMe.jsx` |
+
+## Deployment
+
+The site is a single-page app. When hosting on Netlify, Vercel or similar, add a rewrite so
+all routes serve `index.html` (for example, `/about` must not return a 404).
+
+## License
+
+Code is released under the terms in [LICENSE](LICENSE). All artwork and images are the
+property of the artist and may not be reproduced without permission.

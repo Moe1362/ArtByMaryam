@@ -1,21 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import artworks from '../../data/artworks';
+import Lightbox from './Lightbox';
 import './Collection.css';
-
-const artworks = [
-  { id: 1, src: '/img1.jpeg', alt: 'Art 1', title: 'Sunset Bliss', medium: 'Oil on Canvas' },
-  { id: 2, src: '/img2.jpeg', alt: 'Art 2', title: "Nature's Embrace", medium: 'Watercolor' },
-  { id: 3, src: '/img3.jpeg', alt: 'Art 3', title: 'Urban Dreams', medium: 'Acrylic on Canvas' },
-  { id: 4, src: '/img4.jpeg', alt: 'Art 4', title: 'Serene Waters', medium: 'Digital Art' },
-  { id: 5, src: '/img5.jpeg', alt: 'Art 5', title: 'Abstract Whispers', medium: 'Mixed Media' },
-  { id: 6, src: '/img6.jpeg', alt: 'Art 6', title: 'Floral Symphony', medium: 'Pastel on Paper' },
-  { id: 7, src: '/img7.jpeg', alt: 'Art 7', title: 'Cosmic Dance', medium: 'Digital Art' },
-  { id: 8, src: '/img8.jpeg', alt: 'Art 8', title: 'Tranquil Reflections', medium: 'Oil on Canvas' },
-  { id: 9, src: '/img9.jpeg', alt: 'Art 9', title: 'Vibrant Energy', medium: 'Acrylic on Canvas' },
-  { id: 10, src: '/img10.jpeg', alt: 'Art 10', title: 'Mystical Forest', medium: 'Watercolor' },
-];
 
 const Collection = () => {
   const itemsRef = useRef([]);
+  const [activeIndex, setActiveIndex] = useState(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -23,6 +13,7 @@ const Collection = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
           }
         });
       },
@@ -37,35 +28,58 @@ const Collection = () => {
   }, []);
 
   return (
-    <div className="collection-container">
-      <div className="collection-header">
-        <p className="collection-eyebrow">Curated Works</p>
-        <h2 className="collection-title">My Art Collection</h2>
+    <section id="collection" className="collection-container" aria-labelledby="collection-title">
+      <header className="collection-header">
+        <p className="eyebrow">Selected Works</p>
+        <h2 id="collection-title" className="collection-title">The Collection</h2>
         <div className="title-rule" />
-      </div>
+        <p className="collection-intro">
+          Portraits, dancers and quiet figures, each drawn together with hand-lettered
+          Persian calligraphy. Select a work to view it in detail.
+        </p>
+      </header>
 
-      <div className="art-grid">
+      <ul className="art-grid">
         {artworks.map((art, index) => (
-          <div
+          <li
             key={art.id}
             className="art-item"
             ref={(el) => (itemsRef.current[index] = el)}
-            style={{ '--delay': `${index * 60}ms` }}
+            style={{ '--delay': `${(index % 4) * 70}ms` }}
           >
-            <div className="art-frame">
-              <img src={art.src} alt={art.alt} />
-              <div className="art-overlay">
-                <span className="overlay-medium">{art.medium}</span>
+            <button
+              type="button"
+              className="art-button"
+              onClick={() => setActiveIndex(index)}
+              aria-label={`View “${art.title}” full size`}
+            >
+              <div className="art-frame">
+                <img src={art.src} alt={art.alt} loading="lazy" decoding="async" />
+                <div className="art-overlay" aria-hidden="true">
+                  <span className="overlay-cta">View Work</span>
+                </div>
               </div>
-            </div>
-            <div className="art-info">
-              <p className="art-title">{art.title}</p>
-              <p className="art-medium">{art.medium}</p>
-            </div>
-          </div>
+              <div className="art-info">
+                <span className="art-index">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <p className="art-title">{art.title}</p>
+                  <p className="art-medium">{art.medium}</p>
+                </div>
+              </div>
+            </button>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+
+      {activeIndex !== null && (
+        <Lightbox
+          artworks={artworks}
+          index={activeIndex}
+          onChange={setActiveIndex}
+          onClose={() => setActiveIndex(null)}
+        />
+      )}
+    </section>
   );
 };
 

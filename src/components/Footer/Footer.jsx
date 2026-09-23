@@ -1,72 +1,75 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import site, { commissionMailto } from '../../data/site';
 import './Footer.css';
 
-const links = {
-  Navigate: ['Home', 'About Me', 'Services', 'Contact'],
-  Services: ['Commissioned Art', 'Art Classes', 'Prints & Editions', 'Consultations'],
-};
-
-const socials = [
-  { label: 'Instagram', href: '#' },
-  { label: 'Pinterest', href: '#' },
-  { label: 'Behance', href: '#' },
+const navigate = [
+  { label: 'Home', to: '/' },
+  { label: 'Collection', to: '/#collection' },
+  { label: 'About the Artist', to: '/about' },
 ];
 
+const services = ['Original Paintings', 'Private Commissions', 'Corporate & Interior Pieces'];
+
 const Footer = () => {
+  const socials = site.socials.filter((s) => s.href);
+
   return (
     <footer className="footer">
       <div className="footer-glow" />
 
       <div className="footer-inner">
-        {/* Brand column */}
         <div className="footer-brand">
           <span className="footer-eyebrow">Studio</span>
-          <h2 className="footer-logo">Art By Maryam</h2>
+          <p className="footer-logo">{site.name}</p>
           <p className="footer-tagline">
-            Turning feeling into form — one canvas at a time.
+            Contemporary paintings where calligraphy, gold and the human figure meet.
           </p>
-          <div className="footer-socials">
-            {socials.map(({ label, href }) => (
-              <a key={label} href={href} className="social-link">
-                {label}
-              </a>
-            ))}
-          </div>
+          {socials.length > 0 && (
+            <div className="footer-socials">
+              {socials.map(({ label, href }) => (
+                <a key={label} href={href} className="social-link" target="_blank" rel="noreferrer">
+                  {label}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Link columns */}
-        {Object.entries(links).map(([heading, items]) => (
-          <div key={heading} className="footer-col">
-            <p className="footer-col-heading">{heading}</p>
-            <ul>
-              {items.map(item => (
-                <li key={item}>
-                  <a href={`#${item.toLowerCase().replace(/\s/g, '')}`}>{item}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <nav className="footer-col" aria-label="Footer">
+          <p className="footer-col-heading">Navigate</p>
+          <ul>
+            {navigate.map(({ label, to }) => (
+              <li key={label}><Link to={to}>{label}</Link></li>
+            ))}
+          </ul>
+        </nav>
 
-        {/* Contact column */}
+        <div className="footer-col">
+          <p className="footer-col-heading">Services</p>
+          <ul>
+            {services.map((item) => (
+              <li key={item}><a href={commissionMailto}>{item}</a></li>
+            ))}
+          </ul>
+        </div>
+
         <div className="footer-col">
           <p className="footer-col-heading">Get in Touch</p>
           <ul className="footer-contact">
-            <li>hello@artbymaryam.com</li>
-            <li>+1 (555) 012-3456</li>
-            <li>San Jose, California</li>
+            <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            <li>{site.location}</li>
           </ul>
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="footer-bottom">
         <div className="footer-rule" />
         <div className="footer-bottom-inner">
           <p className="footer-copy">
-            &copy; {new Date().getFullYear()} Art By Maryam. All rights reserved.
+            &copy; {new Date().getFullYear()} {site.name}. All artwork and images are the property
+            of the artist.
           </p>
-          <p className="footer-credit">Crafted with intention.</p>
+          <p className="footer-credit">Made by hand in California.</p>
         </div>
       </div>
     </footer>
